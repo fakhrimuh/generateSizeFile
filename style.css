@@ -1,0 +1,65 @@
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  margin: auto;
+  text-align: center;
+}
+
+body h1 {
+  text-align: center;
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 48px;
+}
+
+body label {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+body input {
+  border: none;
+  border-bottom: 2px solid black;
+  outline: none;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+body button {
+  border-radius: 8px;
+  font-size: 16px;
+  padding: 12px;
+  cursor: pointer;
+  background-color: none;
+}
+
+body button:hover {
+  border: none;
+  outline: none;
+  background-color: darkgoldenrod;
+}
+
+.container {
+  width: 30%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+select {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 16px;
+  font-size: 12px;
+  outline: none;
+}
+
+#fileForm label,
+#fileForm input,
+#fileForm select {
+  display: block; /* Menjadikan elemen tampil satu per satu di baris baru */
+  margin-bottom: 10px; /* Memberi jarak antara elemen */
+}
