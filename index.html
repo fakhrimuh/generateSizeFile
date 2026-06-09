@@ -1,46 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Generate Specific Size File</title>
+    <title>File Size Generator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Generate File <br />with Specific Size</h1>
-    <div class="container">
-      <form id="fileForm">
-        <label for="fileSize">File Size: </label>
-        <input
-          type="number"
-          id="fileSize"
-          step="1"
-          min="1"
-          placeholder="Masukkan besaran size file"
-          required
-        />
-        <br />
-        <label for="unit">Pilih Satuan: </label>
-        <select id="unit">
-          <option value="kb">Kilobyte (KB)</option>
-          <option value="mb">Megabyte (MB)</option>
-        </select>
-        <br />
-        <label for="fileType">File Type: </label>
-        <select id="fileType">
-          <option value="txt">Text File</option>
-          <option value="pdf">PDF File</option>
-        </select>
-        <br /><br />
-        <button type="submit">Generate File</button>
+    <main class="card">
+      <header class="head">
+        <h1>File Size Generator</h1>
+        <p class="subtitle">Buat file dengan ukuran yang tepat.</p>
+      </header>
+
+      <form id="fileForm" class="form">
+        <div class="field">
+          <label for="fileSize">Ukuran file</label>
+          <div class="input-group">
+            <input
+              type="number"
+              id="fileSize"
+              step="0.01"
+              min="0.01"
+              placeholder="100"
+              required
+            />
+            <select id="unit" aria-label="Satuan ukuran">
+              <option value="kb">KB</option>
+              <option value="mb">MB</option>
+            </select>
+          </div>
+          <p class="hint" id="byteHint"></p>
+        </div>
+
+        <div class="field">
+          <label>Tipe file</label>
+          <div class="type-grid" role="radiogroup" aria-label="Tipe file">
+            <label class="type-option">
+              <input type="radio" name="fileType" value="txt" checked />
+              <span>TXT</span>
+            </label>
+            <label class="type-option">
+              <input type="radio" name="fileType" value="pdf" />
+              <span>PDF</span>
+            </label>
+            <label class="type-option">
+              <input type="radio" name="fileType" value="png" />
+              <span>PNG</span>
+            </label>
+            <label class="type-option">
+              <input type="radio" name="fileType" value="jpg" />
+              <span>JPG</span>
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn" id="generateBtn">Generate file</button>
       </form>
-    </div>
+
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+
+      <p class="note">
+        1 KB = 1024 byte. Finder macOS menampilkan ukuran dalam desimal
+        (1 KB = 1000 byte), jadi angkanya bisa terlihat sedikit berbeda — cek
+        jumlah byte persis lewat <em>Get Info</em>.
+      </p>
+    </main>
+
     <script src="script.js"></script>
   </body>
 </html>
