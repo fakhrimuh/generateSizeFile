@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="id">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,12 +16,12 @@
     <main class="card">
       <header class="head">
         <h1>File Size Generator</h1>
-        <p class="subtitle">Buat file dengan ukuran yang tepat.</p>
+        <p class="subtitle">Create files with an exact size.</p>
       </header>
 
       <form id="fileForm" class="form">
         <div class="field">
-          <label for="fileSize">Ukuran file</label>
+          <label for="fileSize">File size</label>
           <div class="input-group">
             <input
               type="number"
@@ -31,7 +31,7 @@
               placeholder="100"
               required
             />
-            <select id="unit" aria-label="Satuan ukuran">
+            <select id="unit" aria-label="Size unit">
               <option value="kb">KB</option>
               <option value="mb">MB</option>
             </select>
@@ -39,8 +39,8 @@
         </div>
 
         <div class="field">
-          <label>Tipe file</label>
-          <div class="type-grid" role="radiogroup" aria-label="Tipe file">
+          <label>File type</label>
+          <div class="type-grid" role="radiogroup" aria-label="File type">
             <label class="type-option">
               <input type="radio" name="fileType" value="txt" checked />
               <span>TXT</span>
@@ -87,10 +87,10 @@
         <label class="check">
           <input type="checkbox" id="boundaryMode" />
           <span>
-            <strong>Mode batas</strong>
+            <strong>Boundary testing mode</strong>
             <small
-              >Buat 3 file: ukuran −1 byte, tepat, dan +1 byte — untuk menguji
-              validasi batas upload.</small
+              >Create 3 files: −1 byte, exact, and +1 byte — to test upload
+              limit validation.</small
             >
           </span>
         </label>

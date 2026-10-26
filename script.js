@@ -3,7 +3,6 @@ const statusEl = document.getElementById("status");
 const generateBtn = document.getElementById("generateBtn");
 const fileSizeInput = document.getElementById("fileSize");
 const unitSelect = document.getElementById("unit");
-const byteHint = document.getElementById("byteHint");
 const boundaryInput = document.getElementById("boundaryMode");
 
 // Jeda antar unduhan agar browser tidak memblokir unduhan beruntun.
@@ -17,22 +16,6 @@ function targetBytes() {
     : Math.round(value * 1024 * 1024);
 }
 
-function updateByteHint() {
-  const bytes = targetBytes();
-  if (!bytes) {
-    byteHint.textContent = "";
-    return;
-  }
-  const fmt = (n) => n.toLocaleString("id-ID");
-  byteHint.textContent = boundaryInput.checked
-    ? `= ${fmt(bytes)} byte (akan dibuat: ${fmt(bytes - 1)}, ${fmt(bytes)}, ${fmt(bytes + 1)})`
-    : `= ${fmt(bytes)} byte`;
-}
-
-fileSizeInput.addEventListener("input", updateByteHint);
-unitSelect.addEventListener("change", updateByteHint);
-boundaryInput.addEventListener("change", updateByteHint);
-
 form.addEventListener("submit", async function (event) {
   event.preventDefault();
 
@@ -41,10 +24,10 @@ form.addEventListener("submit", async function (event) {
   const type = FILE_TYPES[fileType];
 
   if (!targetSizeBytes) {
-    return setStatus("Masukkan ukuran file yang valid.", "err");
+    return setStatus("Enter a valid file size.", "err");
   }
   if (!type) {
-    return setStatus("Tipe file tidak didukung.", "err");
+    return setStatus("Unsupported file type.", "err");
   }
 
   const variants = boundaryInput.checked
@@ -56,7 +39,7 @@ form.addEventListener("submit", async function (event) {
     : [{ suffix: "", bytes: targetSizeBytes }];
 
   generateBtn.disabled = true;
-  setStatus("Membuat file…");
+  setStatus("Generating file…");
 
   const done = [];
   const failed = [];
@@ -64,16 +47,16 @@ form.addEventListener("submit", async function (event) {
   for (const [index, variant] of variants.entries()) {
     const fileName = `generated_file${variant.suffix}.${type.ext}`;
     try {
-      if (variant.bytes < 1) throw new Error("Ukuran harus minimal 1 byte.");
+      if (variant.bytes < 1) throw new Error("Size must be at least 1 byte.");
       const blob = await type.build(variant.bytes);
       if (blob.size !== variant.bytes) {
         throw new Error(
-          `Ukuran hasil (${blob.size.toLocaleString("id-ID")} byte) tidak sesuai target.`
+          `Generated size (${blob.size.toLocaleString("en-US")} bytes) does not match the target.`
         );
       }
       if (index > 0) await sleep(DOWNLOAD_DELAY_MS);
       downloadFile(blob, fileName);
-      done.push(`${fileName} — ${blob.size.toLocaleString("id-ID")} byte`);
+      done.push(`${fileName} — ${blob.size.toLocaleString("en-US")} bytes`);
     } catch (err) {
       failed.push(`${fileName}: ${err.message}`);
     }
@@ -84,15 +67,15 @@ form.addEventListener("submit", async function (event) {
   if (failed.length === 0) {
     setStatus(
       done.length === 1
-        ? `Berhasil! ${done[0]} diunduh.`
-        : `Berhasil! ${done.length} file diunduh:\n${done.join("\n")}`,
+        ? `Done! ${done[0]} downloaded.`
+        : `Done! ${done.length} files downloaded:\n${done.join("\n")}`,
       "ok"
     );
   } else if (done.length === 0) {
     setStatus(failed.join("\n"), "err");
   } else {
     setStatus(
-      `${done.length} file diunduh:\n${done.join("\n")}\n\nGagal:\n${failed.join("\n")}`,
+      `${done.length} files downloaded:\n${done.join("\n")}\n\nFailed:\n${failed.join("\n")}`,
       "err"
     );
   }
