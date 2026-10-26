@@ -114,8 +114,8 @@ input[type="number"]:focus,
 
 .type-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
 }
 
 .type-option {
@@ -153,6 +153,33 @@ input[type="number"]:focus,
   box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.check input {
+  margin-top: 3px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.check strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.check small {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
 .btn {
   padding: 12px;
   font-size: 15px;
@@ -183,6 +210,8 @@ input[type="number"]:focus,
   text-align: center;
   font-size: 13px;
   min-height: 18px;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
 }
 
 .status.ok {

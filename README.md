@@ -1,54 +1,81 @@
 # File Size Generator
 
-Aplikasi web sederhana untuk membuat file dummy dengan **ukuran byte yang presisi**. Berguna untuk menguji batas unggah (upload limit), validasi ukuran file, atau kebutuhan pengujian lainnya.
+**English** · [Bahasa Indonesia](#bahasa-indonesia)
 
-Berjalan sepenuhnya di browser — tanpa server, tanpa dependency, dan tanpa proses build.
+Create dummy files with an **exact byte size** — handy for testing upload limits and file size validation. Runs entirely in the browser: no server, no dependencies, no build step.
+
+## Features
+
+- **10 file types:** TXT, CSV, JSON, PDF, PNG, JPG, GIF, ZIP, DOCX, XLSX.
+- **Boundary mode:** creates 3 files at once — **−1 byte**, **exact**, **+1 byte** (suffixes `_minus1`, `_exact`, `_plus1`) to test limit validation.
+- **Byte-exact and valid:** 100 KB → exactly 102,400 bytes, and the file still opens. Size is verified before download.
+
+## Usage
+
+1. Open [`index.html`](index.html) in a browser.
+2. Enter a size (**KB** / **MB**) and pick a file type.
+3. (Optional) Tick **Boundary mode**.
+4. Click **Generate file**.
+
+> **Units:** 1 KB = 1,024 bytes, 1 MB = 1,048,576 bytes. macOS Finder uses decimal (1 KB = 1,000), so 102,400 bytes shows as "102 KB". Use **Get Info** to see the real byte count.
+
+## How it works
+
+Padding is added until the target size is reached, without breaking the format:
+
+| Type | Padding |
+| ---- | ------- |
+| TXT / CSV / JSON | Filler characters (JSON stays parseable) |
+| PDF | Inside the content stream |
+| PNG | `tEXt` chunk (valid CRC32) before `IEND` |
+| JPG | `COM` segments after `SOI` |
+| GIF | Comment Extension before the trailer |
+| ZIP | Uncompressed archive with one `padding.txt` |
+| DOCX / XLSX | Blank lines after the XML root element in an uncompressed Office package |
+
+## Limitations
+
+- Below each format's minimum size the app shows the required minimum instead of producing a broken file (e.g. JSON 48 B, GIF 43 B, ZIP 120 B, DOCX ~1.3 KB, XLSX ~2.3 KB).
+- GIF cannot reach exactly 44, 45, or 47 bytes.
+- PNG/JPG rely on the browser's `<canvas>` API.
+
+---
+
+# Bahasa Indonesia
+
+Buat file dummy dengan **ukuran byte yang presisi** — berguna untuk menguji batas unggah (upload limit) dan validasi ukuran file. Berjalan sepenuhnya di browser: tanpa server, tanpa dependency, tanpa proses build.
 
 ## Fitur
 
-- **4 tipe file:** TXT, PDF, PNG, dan JPG.
-- **Presisi byte:** ukuran file hasil persis sama dengan target (mis. 100 KB → tepat 102.400 byte).
-- File gambar (PNG/JPG) dan PDF yang dihasilkan tetap **valid** dan bisa dibuka.
-- Antarmuka terang & minimalis, responsif, tanpa framework.
+- **10 tipe file:** TXT, CSV, JSON, PDF, PNG, JPG, GIF, ZIP, DOCX, XLSX.
+- **Mode batas:** membuat 3 file sekaligus — **−1 byte**, **tepat**, **+1 byte** (akhiran `_minus1`, `_exact`, `_plus1`) untuk menguji validasi batas.
+- **Presisi byte dan valid:** 100 KB → tepat 102.400 byte, dan file tetap bisa dibuka. Ukuran diverifikasi sebelum diunduh.
 
 ## Cara pakai
 
-1. Buka [`index.html`](index.html) langsung di browser (cukup klik dua kali, atau drag ke jendela browser).
-2. Masukkan **ukuran file** dan pilih satuan (**KB** / **MB**).
-3. Pilih **tipe file** (TXT / PDF / PNG / JPG).
-4. Klik **Generate file** — file akan otomatis terunduh.
+1. Buka [`index.html`](index.html) di browser.
+2. Masukkan ukuran (**KB** / **MB**) dan pilih tipe file.
+3. (Opsional) Centang **Mode batas**.
+4. Klik **Generate file**.
 
-## Catatan tentang satuan ukuran
-
-Aplikasi memakai definisi **biner**:
-
-| Satuan | Jumlah byte |
-| ------ | ----------- |
-| 1 KB   | 1.024 byte  |
-| 1 MB   | 1.048.576 byte |
-
-> **Penting:** Finder di macOS menampilkan ukuran dengan basis **desimal** (1 KB = 1.000 byte), jadi file 102.400 byte akan terlihat sebagai "102 KB", bukan "100 KB". Untuk melihat jumlah byte yang sebenarnya, klik kanan file → **Get Info** dan lihat angka dalam tanda kurung. Aplikasi juga menampilkan jumlah byte persis di layar setelah file dibuat.
+> **Satuan:** 1 KB = 1.024 byte, 1 MB = 1.048.576 byte. Finder macOS memakai desimal (1 KB = 1.000), jadi 102.400 byte tampil sebagai "102 KB". Gunakan **Get Info** untuk melihat jumlah byte sebenarnya.
 
 ## Cara kerja
 
-Setiap tipe file dibuat dengan menambahkan padding hingga mencapai ukuran target, tanpa merusak struktur format:
+Padding ditambahkan sampai ukuran target tercapai, tanpa merusak format:
 
-- **TXT** — teks header + padding karakter.
-- **PDF** — PDF minimal yang valid, padding disisipkan di dalam content stream.
-- **PNG** — gambar 1×1 dari `<canvas>`, lalu disisipkan chunk `tEXt` (dengan CRC32 yang benar) tepat sebelum chunk `IEND`.
-- **JPG** — gambar 1×1 JPEG, disisipkan segmen `COM` (marker `0xFFFE`) setelah marker `SOI`; otomatis dipecah menjadi beberapa segmen jika padding melebihi ~64 KB.
-
-## Struktur proyek
-
-```
-.
-├── index.html   # Struktur halaman
-├── style.css    # Tampilan (terang & minimalis)
-├── script.js    # Logika pembuatan file
-└── README.md
-```
+| Tipe | Padding |
+| ---- | ------- |
+| TXT / CSV / JSON | Karakter pengisi (JSON tetap bisa di-parse) |
+| PDF | Di dalam content stream |
+| PNG | Chunk `tEXt` (CRC32 valid) sebelum `IEND` |
+| JPG | Segmen `COM` setelah `SOI` |
+| GIF | Comment Extension sebelum trailer |
+| ZIP | Arsip tanpa kompresi berisi satu `padding.txt` |
+| DOCX / XLSX | Baris kosong setelah elemen root XML pada paket Office tanpa kompresi |
 
 ## Keterbatasan
 
-- Untuk ukuran yang sangat kecil (lebih kecil dari overhead minimum format gambar/PDF), aplikasi menampilkan pesan berisi ukuran minimum yang dibutuhkan alih-alih menghasilkan file rusak.
-- Pembuatan gambar mengandalkan API `<canvas>` browser, sehingga membutuhkan browser modern.
+- Di bawah ukuran minimum tiap format, aplikasi menampilkan ukuran minimum yang dibutuhkan alih-alih menghasilkan file rusak (mis. JSON 48 B, GIF 43 B, ZIP 120 B, DOCX ± 1,3 KB, XLSX ± 2,3 KB).
+- GIF tidak bisa mencapai ukuran persis 44, 45, atau 47 byte.
+- PNG/JPG bergantung pada API `<canvas>` browser.

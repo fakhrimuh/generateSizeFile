@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
@@ -36,7 +36,6 @@
               <option value="mb">MB</option>
             </select>
           </div>
-          <p class="hint" id="byteHint"></p>
         </div>
 
         <div class="field">
@@ -45,6 +44,14 @@
             <label class="type-option">
               <input type="radio" name="fileType" value="txt" checked />
               <span>TXT</span>
+            </label>
+            <label class="type-option">
+              <input type="radio" name="fileType" value="csv" />
+              <span>CSV</span>
+            </label>
+            <label class="type-option">
+              <input type="radio" name="fileType" value="json" />
+              <span>JSON</span>
             </label>
             <label class="type-option">
               <input type="radio" name="fileType" value="pdf" />
@@ -58,21 +65,45 @@
               <input type="radio" name="fileType" value="jpg" />
               <span>JPG</span>
             </label>
+            <label class="type-option">
+              <input type="radio" name="fileType" value="gif" />
+              <span>GIF</span>
+            </label>
+            <label class="type-option">
+              <input type="radio" name="fileType" value="zip" />
+              <span>ZIP</span>
+            </label>
+            <label class="type-option">
+              <input type="radio" name="fileType" value="docx" />
+              <span>DOCX</span>
+            </label>
+            <label class="type-option">
+              <input type="radio" name="fileType" value="xlsx" />
+              <span>XLSX</span>
+            </label>
           </div>
         </div>
 
-        <button type="submit" class="btn" id="generateBtn">Generate file</button>
+        <label class="check">
+          <input type="checkbox" id="boundaryMode" />
+          <span>
+            <strong>Mode batas</strong>
+            <small
+              >Buat 3 file: ukuran −1 byte, tepat, dan +1 byte — untuk menguji
+              validasi batas upload.</small
+            >
+          </span>
+        </label>
+
+        <button type="submit" class="btn" id="generateBtn">
+          Generate file
+        </button>
       </form>
 
       <p id="status" class="status" role="status" aria-live="polite"></p>
-
-      <p class="note">
-        1 KB = 1024 byte. Finder macOS menampilkan ukuran dalam desimal
-        (1 KB = 1000 byte), jadi angkanya bisa terlihat sedikit berbeda — cek
-        jumlah byte persis lewat <em>Get Info</em>.
-      </p>
     </main>
 
+    <script src="generators.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
